@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Controller UI</title>
+  <title>Fun Controller UI</title>
   <style>
     body {
-      font-family: sans-serif;
-      background: #1e1e2f;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #1e1e2f, #3a3a5c);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -18,17 +18,153 @@
     }
 
     .screen {
-      background: #000;
-      color: #0f0;
+      background: #111;
+      color: #00ffcc;
       font-family: 'Courier New', monospace;
-      padding: 10px 20px;
-      margin-bottom: 20px;
-      border-radius: 5px;
-      min-width: 200px;
+      padding: 15px 30px;
+      margin-bottom: 30px;
+      border-radius: 12px;
+      min-width: 260px;
       text-align: center;
-      font-size: 1.2rem;
-      box-shadow: 0 0 10px #0f0;
+      font-size: 1.5rem;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+      transition: all 0.2s ease-in-out;
     }
-    </body>
-</html>
 
+    .controller {
+      display: flex;
+      gap: 60px;
+      background: #2b2b3d;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .direction-pad {
+      position: relative;
+      width: 140px;
+      height: 140px;
+    }
+
+    .direction-pad button {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background: #ff4d6d;
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255, 77, 109, 0.4);
+      transition: all 0.2s ease-in-out;
+    }
+
+    .direction-pad button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(255, 77, 109, 0.6);
+    }
+
+    .up { top: 0; left: 45px; }
+    .down { bottom: 0; left: 45px; }
+    .left { top: 45px; left: 0; }
+    .right { top: 45px; right: 0; }
+    .center {
+      top: 45px; left: 45px;
+      width: 50px; height: 50px;
+      background: #888;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      justify-content: center;
+    }
+
+    .action-buttons button {
+      width: 70px;
+      height: 70px;
+      background: #00c2ff;
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 1.3rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(0, 194, 255, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .action-buttons button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 20px rgba(0, 194, 255, 0.6);
+    }
+
+    @media (max-width: 600px) {
+      .controller {
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="screen" id="display">Tekan tombol</div>
+
+  <div class="controller">
+    <!-- Directional Pad -->
+    <div class="direction-pad">
+      <button class="up" data-key="Atas">↑</button>
+      <button class="down" data-key="Bawah">↓</button>
+      <button class="left" data-key="Kiri">←</button>
+      <button class="right" data-key="Kanan">→</button>
+      <div class="center"></div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button data-key="A">A</button>
+      <button data-key="B">B</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+
+    function updateDisplay(text) {
+      display.textContent = text;
+    }
+
+    // Button click events
+    document.querySelectorAll('button').forEach(button => {
+      button.addEventListener('click', () => {
+        const value = button.dataset.key;
+        updateDisplay(value);
+      });
+    });
+
+    // Keyboard event
+    document.addEventListener('keydown', (e) => {
+      const keyMap = {
+        ArrowUp: 'Atas',
+        ArrowDown: 'Bawah',
+        ArrowLeft: 'Kiri',
+        ArrowRight: 'Kanan',
+        a: 'A',
+        b: 'B'
+      };
+      const key = keyMap[e.key.toLowerCase()];
+      if (key) {
+        updateDisplay(key);
+      }
+    });
+  </script>
+
+</body>
+</html>
